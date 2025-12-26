@@ -1,5 +1,5 @@
 # CapsLock-Switch
-使用AutoHotkey修改Windows中CapsLock键的功能，使其操作逻辑与Mac相同。
+使用AutoHotkey修改Windows中CapsLock键的功能，使其操作逻辑与Mac相同
 ## 说明
 * CapsLock键的功能被修改为短按切换中英文，长按切换大小写
 * 默认使用Ctrl+Space作为切换中英文的快捷键，如果使用其它快捷键请在代码中修改
