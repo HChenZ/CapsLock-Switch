@@ -1,7 +1,7 @@
-#Requires AutoHotkey v2.0   ; Ç¿ÖÆÊ¹ÓÃ v2.0 °æ±¾
-; CapsLock¶Ì°´ÇĞ»»ÖĞÓ¢ÎÄ£¬³¤°´ÇĞ»»´óĞ¡Ğ´
+#Requires AutoHotkey v2.0  ; å¼ºåˆ¶ä½¿ç”¨ v2.0 ç‰ˆæœ¬
+; CapsLock çŸ­æŒ‰åˆ‡æ¢ä¸­è‹±æ–‡ï¼Œé•¿æŒ‰åˆ‡æ¢å¤§å°å†™
 
-; ×Ô¶¯ÒÔ¹ÜÀíÔ±È¨ÏŞÔËĞĞ
+; è‡ªåŠ¨ä»¥ç®¡ç†å‘˜æƒé™è¿è¡Œ
 if !A_IsAdmin
 {
     Run '*RunAs "' A_ScriptFullPath '"'
@@ -12,23 +12,35 @@ if !A_IsAdmin
 SendMode "Input"
 SetWorkingDir(A_ScriptDir)
 
+; é•¿æŒ‰é˜²é‡å…¥æ ‡å¿—
+longPressActive := false
+
 *CapsLock::
 {
-    ; µÈ´ı°´¼üÊÍ·Å£¬³¤°´Ê±¼äãĞÖµÎª 0.3s
-    if (!KeyWait("CapsLock", "T0.3"))  ; ³¬Ê± ¡ú ³¤°´
+    global longPressActive
+
+    ; å¦‚æœå¤„äºé•¿æŒ‰çŠ¶æ€ï¼Œç­‰å¾…è§£é”
+    if (longPressActive)
     {
-        ; Á¢¼´ÇĞ»»´óĞ¡Ğ´Ëø¶¨×´Ì¬
+        KeyWait("CapsLock")
+        longPressActive := false
+        return
+    }
+
+    ; é•¿æŒ‰æ—¶é—´é˜ˆå€¼ 0.3s
+    if (!KeyWait("CapsLock", "T0.3"))  ; è¶…æ—¶ â†’ é•¿æŒ‰
+    {
+        longPressActive := true  ; é”å®šï¼Œé˜»æ­¢åç»­è§¦å‘
+
+        ; åˆ‡æ¢å¤§å°å†™é”å®šçŠ¶æ€
         if GetKeyState("CapsLock", "T")
             SetCapsLockState "Off"
         else
             SetCapsLockState "On"
-        
-        ; µÈ´ı°´¼üÊµ¼ÊÊÍ·Å
-        KeyWait("CapsLock")
+
+        KeyWait("CapsLock")  ; ç­‰å¾…æŒ‰é”®é‡Šæ”¾
+        longPressActive := false  ; è§£é”ï¼Œå…è®¸ä¸‹ä¸€æ¬¡æ­£å¸¸è§¦å‘
     }
-    else  ; ÔÚãĞÖµÊ±¼äÄÚÊÍ·Å ¡ú ¶Ì°´
-    {
-        ; ÇĞ»»ÊäÈë·¨
-        Send("^{Space}")
-    }
+    else  ; é˜ˆå€¼å†…é‡Šæ”¾ â†’ çŸ­æŒ‰
+        Send("#{Space}")  ; åˆ‡æ¢è¾“å…¥æ³•
 }
