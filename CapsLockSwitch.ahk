@@ -42,5 +42,5 @@ longPressActive := false
         longPressActive := false  ; 解锁，允许下一次正常触发
     }
     else  ; 阈值内释放 → 短按
-        Send("#{Space}")  ; 切换输入法
+        Send("^{Space}")  ; 切换输入法
 }
